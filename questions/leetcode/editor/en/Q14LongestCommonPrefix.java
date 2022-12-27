@@ -73,7 +73,21 @@ public class Q14LongestCommonPrefix{
   //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String longestCommonPrefix(String[] strs) {
-        
+        String res = strs[0];
+        int max = res.length();
+
+        for (int i = 1; i < strs.length; i ++){
+            String cur = strs[i];
+            max = Math.min(max, cur.length());
+
+            for (int j = 0; j < max; j ++){
+                if(cur.charAt(j) != res.charAt(j)) {
+                    max = j;
+                }
+            }
+        }
+
+        return res.substring(0, max);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

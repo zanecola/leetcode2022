@@ -80,40 +80,47 @@ package questions.leetcode.editor.en;
 // Related Topics Hash Table String Backtracking 👍 13376 👎 780
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Q17LetterCombinationsOfAPhoneNumber {
     public static void main(String[] args) {
         Solution solution = new Q17LetterCombinationsOfAPhoneNumber().new Solution();
-        Character[] c = new Character[]{'1'};
-        System.out.println(c.toString());
+        char[] c = new char[]{'1'};
+        System.out.println(String.copyValueOf(c));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-        Map<Character, Character[]> pad;
+        Map<Character, char[]> pad = new HashMap<>();
 
-        private void inner(List<String> list, char[] digits, int index) {
-            Character[] chars = pad.get(digits[index]);
-            chars.toString();
+        private void inner(List<String> list, char[] digits, int index, char[] buffer) {
+            if(index == digits.length){
+                list.add(String.copyValueOf(buffer));
+                return;
+            }
+            char[] chars = pad.get(digits[index]);
+            for (char aChar : chars) {
+                buffer[index] = aChar;
 
+                inner(list, digits, index + 1, buffer);
+            }
         }
 
         public List<String> letterCombinations(String digits) {
             List<String> res = new ArrayList<>();
+            if (digits.isEmpty()) return res;
+            char[] buffer = new char[digits.length()];
 
-            pad.put('2', new Character[]{'a', 'b', 'c'});
-            pad.put('3', new Character[]{'d', 'e', 'f'});
-            pad.put('4', new Character[]{'g', 'h', 'i'});
-            pad.put('5', new Character[]{'j', 'k', 'l'});
-            pad.put('6', new Character[]{'m', 'n', 'o'});
-            pad.put('7', new Character[]{'p', 'q', 'r', 's'});
-            pad.put('8', new Character[]{'t', 'u', 'v'});
-            pad.put('9', new Character[]{'x', 'y', 'z', 'w'});
+            pad.put('2', new char[]{'a', 'b', 'c'});
+            pad.put('3', new char[]{'d', 'e', 'f'});
+            pad.put('4', new char[]{'g', 'h', 'i'});
+            pad.put('5', new char[]{'j', 'k', 'l'});
+            pad.put('6', new char[]{'m', 'n', 'o'});
+            pad.put('7', new char[]{'p', 'q', 'r', 's'});
+            pad.put('8', new char[]{'t', 'u', 'v'});
+            pad.put('9', new char[]{'x', 'y', 'z', 'w'});
 
-            inner(res, digits.toCharArray(), 0);
+            inner(res, digits.toCharArray(), 0, buffer);
 
             return res;
         }
