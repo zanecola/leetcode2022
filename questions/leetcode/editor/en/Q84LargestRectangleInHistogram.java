@@ -64,6 +64,8 @@ package questions.leetcode.editor.en;
 // Related Topics Array Stack Monotonic Stack 👍 13098 👎 185
 
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 public class Q84LargestRectangleInHistogram {
@@ -75,7 +77,7 @@ public class Q84LargestRectangleInHistogram {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int largestRectangleArea(int[] heights) {
-            Stack<Integer> s = new Stack<>();
+            Deque<Integer> s = new ArrayDeque<>();
             int[] left = new int[heights.length];
             int[] right = new int[heights.length];
             int res = 0;
