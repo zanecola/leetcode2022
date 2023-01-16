@@ -102,6 +102,13 @@ import java.util.Deque;
 public class Q114FlattenBinaryTreeToLinkedList {
     public static void main(String[] args) {
         Solution solution = new Q114FlattenBinaryTreeToLinkedList().new Solution();
+        var t1 = new TreeNode(1);
+        var t2 = new TreeNode(2);
+        var t3 = new TreeNode(3);
+
+        t1.left = t2;
+        t1.right = t3;
+        solution.flatten(t1);
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 
@@ -124,21 +131,21 @@ public class Q114FlattenBinaryTreeToLinkedList {
         public void flatten(TreeNode root) {
             Deque<TreeNode> s = new ArrayDeque<>();
 
-            TreeNode dumb = new TreeNode();
-            dumb.right = root;
+            TreeNode pre = null;
+            if (root == null) return;
+            s.push(root);
 
-            TreeNode cur = root;
-
-            while (cur != null || !s.isEmpty()) {
-                while (cur != null) {
-                    s.push(cur);
-                    cur = cur.left;
+            while (!s.isEmpty()) {
+                var cur = s.pop();
+                if (pre != null) {
+                    pre.right = cur;
+                    pre.left = null;
                 }
 
-                if (!s.isEmpty()) {
-                    cur = s.pop();
-                    cur = cur.right;
-                }
+                if (cur.right != null) s.push(cur.right);
+                if (cur.left != null) s.push(cur.left);
+
+                pre = cur;
             }
         }
     }
