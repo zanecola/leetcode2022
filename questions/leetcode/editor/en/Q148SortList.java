@@ -115,61 +115,43 @@ public class Q148SortList {
     class Solution {
         public ListNode sortList(ListNode head) {
             if (head == null || head.next == null) return head;
+            ListNode dummy = new ListNode();
+            ListNode cur = dummy;
 
-            int pivot = getMid(head).val;
+            ListNode mid = getMid(head);
 
-            ListNode large = new ListNode();
-            ListNode largeCur = large;
-            ListNode small = new ListNode();
-            ListNode smallCur = small;
-            ListNode eq = new ListNode();
-            ListNode eqCur = eq;
+            ListNode l1 = mid.next;
+            mid.next = null;
+            ListNode l2 = head;
 
-            ListNode cur = head;
-            while (cur != null) {
-                var next = cur.next;
-                if (cur.val > pivot) {
-                    largeCur.next = cur;
-                    cur.next = null;
-                    largeCur = largeCur.next;
-                } else if (cur.val < pivot) {
-                    smallCur.next = cur;
-                    cur.next = null;
-                    smallCur = smallCur.next;
+            l1 = sortList(l1);
+            l2 = sortList(l2);
+
+            while (l1 != null && l2 != null) {
+                if (l1.val < l2.val) {
+                    cur.next = l1;
+                    l1 = l1.next;
+                    cur = cur.next;
                 } else {
-                    eqCur.next = cur;
-                    cur.next = null;
-                    eqCur = eqCur.next;
+                    cur.next = l2;
+                    l2 = l2.next;
+                    cur = cur.next;
                 }
-                cur = next;
             }
 
+            if (l1 == null) cur.next = l2;
+            if (l2 == null) cur.next = l1;
 
-            large = sortList(large.next);
-            small = sortList(small.next);
-
-            eqCur.next = large;
-
-            if (small == null) {
-                return eq.next;
-            } else {
-                smallCur = small;
-                while (smallCur.next != null) {
-                    smallCur = smallCur.next;
-                }
-
-                smallCur.next = eq.next;
-                return small;
-            }
+            return dummy.next;
         }
 
-        public ListNode getMid(ListNode head) {
-            ListNode fast = head;
-            ListNode slow = head;
-            while (fast != null && fast.next != null) {
-                fast = fast.next.next;
+        ListNode getMid(ListNode head) {
+            ListNode fast = head, slow = head;
+            while (fast.next != null && fast.next.next != null) {
                 slow = slow.next;
+                fast = fast.next.next;
             }
+
             return slow;
         }
     }
