@@ -114,19 +114,10 @@ public class Q1143LongestCommonSubsequence {
 
             int[][] dp = new int[c1.length][c2.length];
 
-//            for (int i = 0; i < c1.length; i++) {
-//                dp[i][0] = 1;
-//            }
-//
-//            for (int j = 0; j < c2.length; j++) {
-//                dp[0][j] = 1;
-//            }
-
             for (int i = 1; i < c1.length; i++) {
                 for (int j = 1; j < c2.length; j++) {
-                    dp[i][j] = Math.max(dp[i - 1][j], Math.max(dp[i][j - 1], dp[i - 1][j - 1]));
-
-                    if (c1[i] == c2[j] && dp[i][j] <= Math.min(i - 1, j - 1)) dp[i][j] += 1;
+                    if (c1[i] == c2[j]) dp[i][j] = dp[i - 1][j - 1] + 1;
+                    else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
                 }
             }
 
