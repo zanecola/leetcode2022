@@ -111,27 +111,26 @@ public class Q394DecodeString {
     class Solution {
         public String decodeString(String s) {
             Deque<Integer> nums = new ArrayDeque<>();
-            Deque<String> strs = new ArrayDeque<>();
+            Deque<StringBuilder> strs = new ArrayDeque<>();
 
             StringBuilder numBuf = new StringBuilder();
             StringBuilder strBuf = new StringBuilder();
 
             for (char c : s.toCharArray()) {
-                if (c == ']') {
-                    int num = nums.pop();
-                    StringBuilder sb = new StringBuilder();
-                    while (num-- > 0) {
-                        sb.append(strBuf.toString());
-                    }
-                    strBuf = new StringBuilder(strs.pop() + sb.toString());
-                } else if (Character.isDigit(c)) {
+                if (Character.isDigit(c)) {
                     numBuf.append(c);
                 } else if (c == '[') {
                     nums.push(Integer.parseInt(numBuf.toString()));
                     numBuf = new StringBuilder();
 
-                    strs.push(strBuf.toString());
+                    strs.push(strBuf);
                     strBuf = new StringBuilder();
+                } else if (c == ']') {
+                    int num = nums.pop();
+
+                    String ss = strBuf.toString().repeat(num);
+                    
+                    strBuf = strs.pop().append(ss);
                 } else {
                     strBuf.append(c);
                 }
