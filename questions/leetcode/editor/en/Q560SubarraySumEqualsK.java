@@ -52,28 +52,31 @@ package questions.leetcode.editor.en;
 // Related Topics Array Hash Table Prefix Sum 👍 17075 👎 501
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Q560SubarraySumEqualsK {
     public static void main(String[] args) {
         Solution solution = new Q560SubarraySumEqualsK().new Solution();
-        solution.subarraySum(new int[]{1, 1, 1}, 2);
+        solution.subarraySum(new int[]{1, 2, 3}, 2);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int subarraySum(int[] nums, int k) {
             int res = 0;
-            int sum = 0;
+            Map<Integer, Integer> map = new HashMap<>();
 
-            for (int l = 0, r = 0; r < nums.length; r++) {
-                sum += nums[r];
+            for (int n : nums) {
+                if (map.containsKey(k - n)) res++;
 
-                if (sum > k) {
-                    while (sum > k && l < r) {
-                        sum -= nums[l];
-                        l++;
-                    }
+                var keys = map.keySet();
+
+                for (int key : keys) {
+                    map.put(key + n, map.getOrDefault(key + n, 0) + 1);
                 }
-                if (sum == k) res++;
+
+                map.put(n, map.getOrDefault(n, 0) + 1);
             }
 
             return res;
