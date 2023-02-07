@@ -58,25 +58,24 @@ import java.util.Map;
 public class Q560SubarraySumEqualsK {
     public static void main(String[] args) {
         Solution solution = new Q560SubarraySumEqualsK().new Solution();
-        solution.subarraySum(new int[]{1, 2, 3}, 2);
+        int res = solution.subarraySum(new int[]{1, 2, 1, 2, 1}, 3);
+        System.out.println(res);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int subarraySum(int[] nums, int k) {
-            int res = 0;
+            int res = 0, sum = 0;
             Map<Integer, Integer> map = new HashMap<>();
+            map.put(0, 1);
 
             for (int n : nums) {
-                if (map.containsKey(k - n)) res++;
-
-                var keys = map.keySet();
-
-                for (int key : keys) {
-                    map.put(key + n, map.getOrDefault(key + n, 0) + 1);
+                sum += n;
+                if (map.containsKey(sum - k)) {
+                    res += map.get(sum - k);
                 }
 
-                map.put(n, map.getOrDefault(n, 0) + 1);
+                map.put(sum, map.getOrDefault(sum, 0) + 1);
             }
 
             return res;
