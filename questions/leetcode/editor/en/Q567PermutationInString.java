@@ -73,7 +73,7 @@ import java.util.Map;
 public class Q567PermutationInString {
     public static void main(String[] args) {
         Solution solution = new Q567PermutationInString().new Solution();
-        solution.checkInclusion("eidbaooo", "ab");
+        solution.checkInclusion("adc", "dadc");
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -82,26 +82,20 @@ public class Q567PermutationInString {
             if (s2.length() > s1.length()) return false;
             char[] c1 = s1.toCharArray();
             int[] map = new int[26];
+            int[] window = new int[26];
 
-            for (char c : s2.toCharArray()) {
-                map[c - 'a']++;
+            for (char c : s2.toCharArray()) map[c - 'a']++;
+
+            int r = 0, l = 0;
+            while (r < s2.length()) window[c1[r++] - 'a']++;
+
+            while (r < s1.length()) {
+                if (Arrays.equals(window, map)) return true;
+                window[c1[r++] - 'a']++;
+                window[c1[l++] - 'a']--;
             }
 
-            for (int i = 0; i < s1.length() - s2.length() + 1; i++) {
-                if (map[c1[i] - 'a'] > 0) {
-                    int j = i;
-                    int[] map1 = new int[26];
-                    while (j < c1.length && map[c1[j] - 'a'] > 0) {
-                        map1[c1[j] - 'a']++;
-                        if (map1[c1[j] - 'a'] > map[c1[j] - 'a']) break;
-                        if (j - i + 1 == s2.length()) return true;
-
-                        j++;
-                    }
-                }
-            }
-
-            return false;
+            return Arrays.equals(window, map);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
