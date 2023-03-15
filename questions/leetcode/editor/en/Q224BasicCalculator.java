@@ -98,34 +98,32 @@ import java.util.Deque;
 public class Q224BasicCalculator {
     public static void main(String[] args) {
         Solution solution = new Q224BasicCalculator().new Solution();
+        solution.calculate(" 2-1 + 2");
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int calculate(String s) {
             Deque<Integer> stack = new ArrayDeque<>();
-            stack.push(0);
+            stack.push(1);
             int sign = 1;
             int cur = 0;
             int sum = 0;
             for (char c : s.toCharArray()) {
                 if (Character.isDigit(c)) {
                     cur = cur * 10 + (c - '0');
-                } else if (c == '-') {
-//                    stack.push(cur * sign);
+                } else {
                     sum += cur * sign;
-                    sign = -1;
                     cur = 0;
-                } else if (c == '+') {
-//                    stack.push(cur * sign);
-                    sum += cur * sign;
-                    sign = 1;
-                    cur = 0;
-                } else if (c == '(' || c == ')' || c == ' ') {
-//                    stack.push(cur * sign);
-                    sum += cur * sign;
-                    sign = 1;
-                    cur = 0;
+                    if (c == '-') {
+                        sign = -stack.peek();
+                    } else if (c == '+') {
+                        sign = stack.peek();
+                    } else if (c == '(') {
+                        stack.push(sign);
+                    } else if (c == ')') {
+                        stack.pop();
+                    }
                 }
             }
             sum += cur * sign;
