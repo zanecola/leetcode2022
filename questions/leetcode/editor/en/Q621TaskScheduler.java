@@ -137,24 +137,18 @@ public class Q621TaskScheduler {
             for (char c : tasks) {
                 map[c - 'A']++;
             }
-            int rest = 0;
-            PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
 
-            for (int i : map) {
-                pq.add(i);
-                rest += i;
+            int max = 0, count = 0;
+            for (int c : map) {
+                if (c > max) {
+                    max = c;
+                    count = 1;
+                } else if (c == max) {
+                    count++;
+                }
             }
 
-            int cur = 0;
-
-            while ((cur-1) * n < rest && !pq.isEmpty()) {
-                int max = pq.poll();
-
-                cur += max;
-                rest -= max;
-            }
-
-            return (cur-1) * n + cur;
+            return Math.max(tasks.length, (max - 1) * (n + 1) + count);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
